@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.2"
+version = "0.0.3"
 
 android {
     compileSdkVersion 26
@@ -43,10 +43,10 @@ repositories {
     mavenCentral()
 }
 
-def siteUrl = 'https://github.com/flamebase/core-kotlin'
-def gitUrl = 'https://github.com/flamebasegit'
+def siteUrl = 'https://github.com/r0cketbase/core-kotlin'
+def gitUrl = 'https://github.com/r0cketbase/core-kotlin.git'
 
-group = "com.flamebase"
+group = "com.rocketbase"
 
 install {
     repositories.mavenInstaller {
@@ -109,7 +109,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "FlamebaseCoreKotlin"
+        name = "RocketbaseCore"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
