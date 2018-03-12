@@ -1,4 +1,4 @@
-package com.rocketbase.core
+package com.rotor.core
 
 import android.content.Context
 import android.net.ConnectivityManager

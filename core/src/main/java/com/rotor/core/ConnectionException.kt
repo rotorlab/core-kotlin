@@ -1,4 +1,4 @@
-package com.rocketbase.core
+package com.rotor.core
 
 import android.util.AndroidRuntimeException
 

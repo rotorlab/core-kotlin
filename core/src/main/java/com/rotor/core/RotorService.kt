@@ -1,4 +1,4 @@
-package com.rocketbase.core
+package com.rotor.core
 
 import android.app.Service
 import android.content.Context
@@ -9,7 +9,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.StrictMode
 import android.util.Log
-import com.rocketbase.core.interfaces.InternalServiceListener
+import com.rotor.core.interfaces.InternalServiceListener
 import com.lambdaworks.redis.RedisClient
 import com.lambdaworks.redis.pubsub.RedisPubSubConnection
 import com.lambdaworks.redis.pubsub.RedisPubSubListener
@@ -20,12 +20,12 @@ import java.util.*
 /**
  * Created by efraespada on 11/03/2018.
  */
-class RocketbaseService: Service() {
+class RotorService: Service() {
 
-    private val TAG = RocketbaseService::class.java.simpleName
+    private val TAG = RotorService::class.java.simpleName
     private val PREF_KEY = "flamebase_url"
     private val PREF_CONFIG_KEY = "flamebase_config"
-    private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rocketbase Server"
+    private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rotor Server"
     lateinit var binder: FBinder
     var initialized: Boolean = false
     var client: RedisClient ? = null
@@ -39,7 +39,7 @@ class RocketbaseService: Service() {
         override fun message(s: String, s2: String) {
             val task = Runnable {
                 try {
-                    Rocketbase.onMessageReceived(JSONObject(s2))
+                    Rotor.onMessageReceived(JSONObject(s2))
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -88,7 +88,7 @@ class RocketbaseService: Service() {
     private fun startConnection() {
         listener?.reconnecting()
         if (client == null) {
-            var url = Rocketbase.urlRedis
+            var url = Rotor.urlRedis
             if (url?.length == 0) {
                 val shared = applicationContext.getSharedPreferences(PREF_CONFIG_KEY, Context.MODE_PRIVATE)
                 url = shared.getString(PREF_KEY, null)
@@ -136,7 +136,7 @@ class RocketbaseService: Service() {
         if (!connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
             initialized = true
             if (client != null && connection != null) {
-                connection?.subscribe(Rocketbase.id)
+                connection?.subscribe(Rotor.id)
             }
         } else if (connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
             if (listener != null) {
@@ -149,7 +149,7 @@ class RocketbaseService: Service() {
 
     fun stopService() {
         if (connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
-            connection?.unsubscribe(Rocketbase.id)
+            connection?.unsubscribe(Rotor.id)
         }
     }
 
@@ -162,10 +162,10 @@ class RocketbaseService: Service() {
 
 
     fun setListener(listener: InternalServiceListener) {
-        this@RocketbaseService.listener = listener
+        this@RotorService.listener = listener
 
         if (initialized) {
-            this@RocketbaseService.listener.connected()
+            this@RotorService.listener.connected()
         }
     }*/
 
@@ -179,8 +179,8 @@ class RocketbaseService: Service() {
 
     inner class FBinder : Binder() {
 
-        val service: RocketbaseService
-            get() = this@RocketbaseService
+        val service: RotorService
+            get() = this@RotorService
 
     }
 }

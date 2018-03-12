@@ -1,4 +1,4 @@
-package com.rocketbase.core.interfaces
+package com.rotor.core.interfaces
 
 import org.json.JSONObject
 
