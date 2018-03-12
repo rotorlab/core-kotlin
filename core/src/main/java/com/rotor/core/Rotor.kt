@@ -1,4 +1,4 @@
-package com.rocketbase.core
+package com.rotor.core
 
 import android.content.ComponentName
 import android.content.Context
@@ -8,17 +8,17 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
-import com.rocketbase.core.interfaces.InternalServiceListener
-import com.rocketbase.core.interfaces.StatusListener
+import com.rotor.core.interfaces.InternalServiceListener
+import com.rotor.core.interfaces.StatusListener
 import com.google.gson.Gson
-import com.rocketbase.core.interfaces.BuilderFace
+import com.rotor.core.interfaces.BuilderFace
 import org.json.JSONObject
 
 /**
  * Created by efraespada on 11/03/2018.
  */
 
-class Rocketbase {
+class Rotor {
 
     companion object {
 
@@ -27,7 +27,7 @@ class Rocketbase {
             NOTIFICATION
         }
 
-        private val TAG = Rocketbase::class.simpleName
+        private val TAG = Rotor::class.simpleName
 
         private var context: Context? = null
         var id: String ? = null
@@ -35,7 +35,7 @@ class Rocketbase {
         var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
-        private var rocketbaseService: RocketbaseService? = null
+        private var rotorService: RotorService? = null
         private var isServiceBound: Boolean? = null
 
         private var gson: Gson? = null
@@ -46,10 +46,10 @@ class Rocketbase {
         val serviceConnection: ServiceConnection = object : ServiceConnection {
 
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                if (service is RocketbaseService.FBinder) {
-                    rocketbaseService = service.service
-                    rocketbaseService?.sc = this
-                    rocketbaseService?.listener = object : InternalServiceListener {
+                if (service is RotorService.FBinder) {
+                    rotorService = service.service
+                    rotorService?.sc = this
+                    rotorService?.listener = object : InternalServiceListener {
 
                         override fun connected() {
                             if (initialized!!) {
@@ -67,9 +67,9 @@ class Rocketbase {
             }
 
             override fun onServiceDisconnected(className: ComponentName) {
-                if (className.className == RocketbaseService::class.java.name) {
-                    rocketbaseService?.listener = null
-                    rocketbaseService = null
+                if (className.className == RotorService::class.java.name) {
+                    rotorService?.listener = null
+                    rotorService = null
                 }
                 if (debug!!) Log.e(TAG, "disconnected")
             }
@@ -105,25 +105,25 @@ class Rocketbase {
         }
 
         @JvmStatic fun stop() {
-            if (isServiceBound != null && isServiceBound!! && rocketbaseService != null && rocketbaseService!!.getServiceConnection() != null) {
-                rocketbaseService!!.stopService()
+            if (isServiceBound != null && isServiceBound!! && rotorService != null && rotorService!!.getServiceConnection() != null) {
+                rotorService!!.stopService()
                 try {
-                    context!!.unbindService(rocketbaseService!!.getServiceConnection())
+                    context!!.unbindService(rotorService!!.getServiceConnection())
                 } catch (e: IllegalArgumentException) {
                     // nothing to do here
                 }
 
                 if (debug!!) Log.e(TAG, "unbound")
-                context!!.stopService(Intent(context, RocketbaseService::class.java))
+                context!!.stopService(Intent(context, RotorService::class.java))
                 isServiceBound = false
             }
         }
 
         private fun start() {
             if (isServiceBound == null || !isServiceBound!!) {
-                val i = Intent(context, RocketbaseService::class.java)
+                val i = Intent(context, RotorService::class.java)
                 context!!.startService(i)
-                context!!.bindService(i, getServiceConnection(RocketbaseService())!!, Context.BIND_AUTO_CREATE)
+                context!!.bindService(i, getServiceConnection(RotorService())!!, Context.BIND_AUTO_CREATE)
                 isServiceBound = true
             }
         }
@@ -133,15 +133,15 @@ class Rocketbase {
         }
 
         @JvmStatic fun onPause() {
-            if (rocketbaseService != null && isServiceBound != null && isServiceBound!!) {
-                context!!.unbindService(rocketbaseService!!.getServiceConnection())
+            if (rotorService != null && isServiceBound != null && isServiceBound!!) {
+                context!!.unbindService(rotorService!!.getServiceConnection())
                 isServiceBound = false
             }
         }
 
 
         @JvmStatic private fun getServiceConnection(obj: Any): ServiceConnection? {
-            return if (obj is RocketbaseService) {
+            return if (obj is RotorService) {
                 serviceConnection
             } else {
                 null
@@ -156,7 +156,7 @@ class Rocketbase {
             }
         }
 
-        @JvmStatic fun core() : Rocketbase.Companion {
+        @JvmStatic fun core() : Rotor.Companion {
             return this@Companion
         }
 

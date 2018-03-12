@@ -1,4 +1,4 @@
-package com.rocketbase.core.interfaces;
+package com.rotor.core.interfaces;
 
 /**
  * Created by efraespada on 21/02/2018.

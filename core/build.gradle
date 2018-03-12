@@ -3,11 +3,10 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.3"
+version = "0.0.1"
 
 android {
     compileSdkVersion 26
-
 
     defaultConfig {
         minSdkVersion 14
@@ -24,29 +23,26 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-
     implementation 'com.android.support:appcompat-v7:26.1.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.code.gson:gson:2.8.2'
-
 }
 
 repositories {
     mavenCentral()
 }
 
-def siteUrl = 'https://github.com/r0cketbase/core-kotlin'
-def gitUrl = 'https://github.com/r0cketbase/core-kotlin.git'
+def siteUrl = 'https://github.com/rotorlab/core-kotlin'
+def gitUrl = 'https://github.com/rotorlab/core-kotlin.git'
 
-group = "com.rocketbase"
+group = "com.rotor"
 
 install {
     repositories.mavenInstaller {
@@ -54,7 +50,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'Real time JSON database for android client'
+                name 'Kotlin core for Rotor client'
                 url siteUrl
                 // Set your license
                 licenses {
@@ -109,7 +105,7 @@ bintray {
     configurations = ['archives']
     pkg {
         repo = "maven"
-        name = "RocketbaseCore"
+        name = "RotorKotlinCore"
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ["Apache-2.0"]
