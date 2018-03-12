@@ -1,4 +1,4 @@
-package com.flamebase.core
+package com.rocketbase.core
 
 import android.app.Service
 import android.content.Context
@@ -9,7 +9,7 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.StrictMode
 import android.util.Log
-import com.flamebase.core.interfaces.InternalServiceListener
+import com.rocketbase.core.interfaces.InternalServiceListener
 import com.lambdaworks.redis.RedisClient
 import com.lambdaworks.redis.pubsub.RedisPubSubConnection
 import com.lambdaworks.redis.pubsub.RedisPubSubListener
@@ -20,26 +20,26 @@ import java.util.*
 /**
  * Created by efraespada on 11/03/2018.
  */
-class FlamebaseService: Service() {
+class RocketbaseService: Service() {
 
-    private val TAG = FlamebaseService::class.java.simpleName
+    private val TAG = RocketbaseService::class.java.simpleName
     private val PREF_KEY = "flamebase_url"
     private val PREF_CONFIG_KEY = "flamebase_config"
-    private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Flamebase Server"
-    lateinit var binder: FlamebaseService.FBinder
+    private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rocketbase Server"
+    lateinit var binder: FBinder
     var initialized: Boolean = false
     var client: RedisClient ? = null
     var moment: Long = 0
     var connection: RedisPubSubConnection<String, String> ? = null
     internal var sc: ServiceConnection ? = null
-    internal var listener: InternalServiceListener ? = null
+    internal var listener: InternalServiceListener? = null
     var connectedToRedis: Boolean = false
 
     private val redisPubSubListener = object : RedisPubSubListener<String, String> {
         override fun message(s: String, s2: String) {
             val task = Runnable {
                 try {
-                    Flamebase.onMessageReceived(JSONObject(s2))
+                    Rocketbase.onMessageReceived(JSONObject(s2))
                 } catch (e: JSONException) {
                     e.printStackTrace()
                 }
@@ -88,7 +88,7 @@ class FlamebaseService: Service() {
     private fun startConnection() {
         listener?.reconnecting()
         if (client == null) {
-            var url = Flamebase.urlRedis
+            var url = Rocketbase.urlRedis
             if (url?.length == 0) {
                 val shared = applicationContext.getSharedPreferences(PREF_CONFIG_KEY, Context.MODE_PRIVATE)
                 url = shared.getString(PREF_KEY, null)
@@ -136,7 +136,7 @@ class FlamebaseService: Service() {
         if (!connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
             initialized = true
             if (client != null && connection != null) {
-                connection?.subscribe(Flamebase.id)
+                connection?.subscribe(Rocketbase.id)
             }
         } else if (connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
             if (listener != null) {
@@ -149,7 +149,7 @@ class FlamebaseService: Service() {
 
     fun stopService() {
         if (connectedToRedis && !NetworkUtil.getConnectivityStatusString(applicationContext).equals(NetworkUtil.NETWORK_STATUS_NOT_CONNECTED)) {
-            connection?.unsubscribe(Flamebase.id)
+            connection?.unsubscribe(Rocketbase.id)
         }
     }
 
@@ -162,10 +162,10 @@ class FlamebaseService: Service() {
 
 
     fun setListener(listener: InternalServiceListener) {
-        this@FlamebaseService.listener = listener
+        this@RocketbaseService.listener = listener
 
         if (initialized) {
-            this@FlamebaseService.listener.connected()
+            this@RocketbaseService.listener.connected()
         }
     }*/
 
@@ -179,8 +179,8 @@ class FlamebaseService: Service() {
 
     inner class FBinder : Binder() {
 
-        val service: FlamebaseService
-            get() = this@FlamebaseService
+        val service: RocketbaseService
+            get() = this@RocketbaseService
 
     }
 }

@@ -1,4 +1,4 @@
-package com.flamebase.core
+package com.rocketbase.core
 
 import android.content.ComponentName
 import android.content.Context
@@ -8,20 +8,26 @@ import android.content.ServiceConnection
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
-import com.flamebase.core.interfaces.InternalServiceListener
-import com.flamebase.core.interfaces.StatusListener
+import com.rocketbase.core.interfaces.InternalServiceListener
+import com.rocketbase.core.interfaces.StatusListener
 import com.google.gson.Gson
+import com.rocketbase.core.interfaces.BuilderFace
 import org.json.JSONObject
 
 /**
  * Created by efraespada on 11/03/2018.
  */
 
-class Flamebase {
+class Rocketbase {
 
     companion object {
 
-        private val TAG = Flamebase::class.simpleName
+        enum class Builder {
+            DATABASE,
+            NOTIFICATION
+        }
+
+        private val TAG = Rocketbase::class.simpleName
 
         private var context: Context? = null
         var id: String ? = null
@@ -29,20 +35,21 @@ class Flamebase {
         var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
-        private var flamebaseService: FlamebaseService? = null
+        private var rocketbaseService: RocketbaseService? = null
         private var isServiceBound: Boolean? = null
 
         private var gson: Gson? = null
         var debug: Boolean? = null
         var initialized: Boolean? = null
+        var builders: HashMap<Builder, BuilderFace> ? = null
 
         val serviceConnection: ServiceConnection = object : ServiceConnection {
 
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
-                if (service is FlamebaseService.FBinder) {
-                    flamebaseService = service.service
-                    flamebaseService?.sc = this
-                    flamebaseService?.listener = object : InternalServiceListener {
+                if (service is RocketbaseService.FBinder) {
+                    rocketbaseService = service.service
+                    rocketbaseService?.sc = this
+                    rocketbaseService?.listener = object : InternalServiceListener {
 
                         override fun connected() {
                             if (initialized!!) {
@@ -60,28 +67,31 @@ class Flamebase {
             }
 
             override fun onServiceDisconnected(className: ComponentName) {
-                if (className.className == FlamebaseService::class.java.name) {
-                    flamebaseService?.listener = null
-                    flamebaseService = null
+                if (className.className == RocketbaseService::class.java.name) {
+                    rocketbaseService?.listener = null
+                    rocketbaseService = null
                 }
                 if (debug!!) Log.e(TAG, "disconnected")
             }
         }
 
         @JvmStatic fun initialize(context: Context, urlServer: String, redisServer: String, statusListener: StatusListener) {
-            Flamebase.context = context
-            Flamebase.urlServer = urlServer
-            Flamebase.urlRedis = redisServer
-            Flamebase.statusListener = statusListener
-            Flamebase.debug = false
-            Flamebase.gson = Gson()
+            Companion.context = context
+            Companion.urlServer = urlServer
+            Companion.urlRedis = redisServer
+            Companion.statusListener = statusListener
+            if (Companion.builders == null) {
+                Companion.builders = HashMap<Builder, BuilderFace>()
+            }
+            Companion.debug = false
+            Companion.gson = Gson()
             val shared = context.getSharedPreferences("flamebase_config", MODE_PRIVATE)
-            Flamebase.id = shared.getString("flamebase_id", null)
-            if (Flamebase.id == null) {
-                Flamebase.id = generateNewId()
+            Companion.id = shared.getString("flamebase_id", null)
+            if (Companion.id == null) {
+                Companion.id = generateNewId()
             }
 
-            initialized = true
+            Companion.initialized = true
 
             start()
         }
@@ -95,25 +105,25 @@ class Flamebase {
         }
 
         @JvmStatic fun stop() {
-            if (isServiceBound != null && isServiceBound!! && flamebaseService != null && flamebaseService!!.getServiceConnection() != null) {
-                flamebaseService!!.stopService()
+            if (isServiceBound != null && isServiceBound!! && rocketbaseService != null && rocketbaseService!!.getServiceConnection() != null) {
+                rocketbaseService!!.stopService()
                 try {
-                    context!!.unbindService(flamebaseService!!.getServiceConnection())
+                    context!!.unbindService(rocketbaseService!!.getServiceConnection())
                 } catch (e: IllegalArgumentException) {
                     // nothing to do here
                 }
 
                 if (debug!!) Log.e(TAG, "unbound")
-                context!!.stopService(Intent(context, FlamebaseService::class.java))
+                context!!.stopService(Intent(context, RocketbaseService::class.java))
                 isServiceBound = false
             }
         }
 
         private fun start() {
             if (isServiceBound == null || !isServiceBound!!) {
-                val i = Intent(context, FlamebaseService::class.java)
+                val i = Intent(context, RocketbaseService::class.java)
                 context!!.startService(i)
-                context!!.bindService(i, getServiceConnection(FlamebaseService())!!, Context.BIND_AUTO_CREATE)
+                context!!.bindService(i, getServiceConnection(RocketbaseService())!!, Context.BIND_AUTO_CREATE)
                 isServiceBound = true
             }
         }
@@ -123,15 +133,15 @@ class Flamebase {
         }
 
         @JvmStatic fun onPause() {
-            if (flamebaseService != null && isServiceBound != null && isServiceBound!!) {
-                context!!.unbindService(flamebaseService!!.getServiceConnection())
+            if (rocketbaseService != null && isServiceBound != null && isServiceBound!!) {
+                context!!.unbindService(rocketbaseService!!.getServiceConnection())
                 isServiceBound = false
             }
         }
 
 
         @JvmStatic private fun getServiceConnection(obj: Any): ServiceConnection? {
-            return if (obj is FlamebaseService) {
+            return if (obj is RocketbaseService) {
                 serviceConnection
             } else {
                 null
@@ -139,7 +149,21 @@ class Flamebase {
         }
 
         @JvmStatic fun onMessageReceived(jsonObject: JSONObject) {
+            if (Companion.builders != null) {
+                for (face in Companion.builders!!.values) {
+                    face.onMessageReceived(jsonObject)
+                }
+            }
+        }
 
+        @JvmStatic fun core() : Rocketbase.Companion {
+            return this@Companion
+        }
+
+        @JvmStatic fun prepare(type: Builder, face: BuilderFace) {
+            if (Companion.builders != null) {
+                Companion.builders!![type] = face
+            }
         }
 
     }

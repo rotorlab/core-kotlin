@@ -1,4 +1,4 @@
-package com.flamebase.core
+package com.rocketbase.core
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -31,13 +31,13 @@ class NetworkUtil {
         }
 
         fun getConnectivityStatusString(context: Context): Int {
-            val conn = NetworkUtil.getConnectivityStatus(context)
+            val conn = getConnectivityStatus(context)
             var status = 0
-            if (conn == NetworkUtil.TYPE_WIFI) {
+            if (conn == TYPE_WIFI) {
                 status = NETWORK_STAUS_WIFI
-            } else if (conn == NetworkUtil.TYPE_MOBILE) {
+            } else if (conn == TYPE_MOBILE) {
                 status = NETWORK_STATUS_MOBILE
-            } else if (conn == NetworkUtil.TYPE_NOT_CONNECTED) {
+            } else if (conn == TYPE_NOT_CONNECTED) {
                 status = NETWORK_STATUS_NOT_CONNECTED
             }
             return status

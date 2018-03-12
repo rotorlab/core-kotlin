@@ -1,4 +1,4 @@
-package com.flamebase.core.interfaces;
+package com.rocketbase.core.interfaces;
 
 /**
  * Created by efraespada on 21/02/2018.

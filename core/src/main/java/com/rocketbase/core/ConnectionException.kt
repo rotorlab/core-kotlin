@@ -1,4 +1,4 @@
-package com.flamebase.core
+package com.rocketbase.core
 
 import android.util.AndroidRuntimeException
 
