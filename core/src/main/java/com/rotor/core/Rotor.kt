@@ -22,11 +22,6 @@ class Rotor {
 
     companion object {
 
-        enum class Builder {
-            DATABASE,
-            NOTIFICATION
-        }
-
         private val TAG = Rotor::class.simpleName
 
         private var context: Context? = null
@@ -154,10 +149,6 @@ class Rotor {
                     face.onMessageReceived(jsonObject)
                 }
             }
-        }
-
-        @JvmStatic fun core() : Rotor.Companion {
-            return this@Companion
         }
 
         @JvmStatic fun prepare(type: Builder, face: BuilderFace) {

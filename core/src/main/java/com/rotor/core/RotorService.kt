@@ -23,8 +23,8 @@ import java.util.*
 class RotorService: Service() {
 
     private val TAG = RotorService::class.java.simpleName
-    private val PREF_KEY = "flamebase_url"
-    private val PREF_CONFIG_KEY = "flamebase_config"
+    private val PREF_KEY = "rotor_url"
+    private val PREF_CONFIG_KEY = "rotor_config"
     private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rotor Server"
     lateinit var binder: FBinder
     var initialized: Boolean = false
