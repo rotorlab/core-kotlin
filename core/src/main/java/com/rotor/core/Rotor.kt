@@ -24,7 +24,7 @@ class Rotor {
 
         private val TAG = Rotor::class.simpleName
 
-        private var context: Context? = null
+        var context: Context? = null
         var id: String ? = null
         var urlServer: String ? = null
         var urlRedis: String ? = null
@@ -33,7 +33,7 @@ class Rotor {
         private var rotorService: RotorService? = null
         private var isServiceBound: Boolean? = null
 
-        private var gson: Gson? = null
+        var gson: Gson? = null
         var debug: Boolean? = null
         var initialized: Boolean? = null
         var builders: HashMap<Builder, BuilderFace> ? = null
