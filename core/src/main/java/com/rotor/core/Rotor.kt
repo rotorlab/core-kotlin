@@ -30,7 +30,7 @@ class Rotor {
         var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
-        private var rotorService: RotorService? = null
+        var rotorService: RotorService? = null
         private var isServiceBound: Boolean? = null
 
         var gson: Gson? = null
