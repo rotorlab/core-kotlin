@@ -1,50 +1,47 @@
 <p align="center"><img width="30%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
 
-# Rotor Database
-
-Work with synchronized Java objects stored as JSON objects. 
+# Rotor Core for Android
 
 ### Requirements
 **1º redis-server:** Amazing Pub/Sub engine for real-time changes. Simply install and start it.
 
 **2º rotor-server:** It will be our server cluster for storing json objects. Server cluster is run with **node** framework.
 
-Check out [rotor-server repo](https://github.com/rotorlab/database-kotlin) for more information.
+Check out [rotor-server repo](https://github.com/rotorlab/server-node) for more information.
 
 ### Usage
 - Import library:
 
 ```groovy
 android {
- 
     defaultConfig {
         multiDexEnabled true
     }
-    
 }
  
 dependencies {
     implementation 'com.rotor:core:0.0.5'
 }
 ```
-- Initialize library on Java:
+Initialize Rotor Core on your app. `connected()` method is fired only when initialized method is called and core is connected to Redis server. `reconnecting()` will be called when core is trying to connect to redis.
+Java implementation:
 ```java
 // redis url starts with redis://, port is not included
 Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1507/", "redis://10.0.2.2", new StatusListener() {
  
     @Override
     public void connected() {
-        /* fired only when initialized method is called and library is connected to redis */
+         
     }
     
     @Override
     public void reconnecting() {
-        /* library is trying to connect to redis */
+         
     }
-  
+   
 });
 ```
-On Kotlin:
+Kotlin implementation:
 ```kotlin
 Rotor.initialize(applicationContext, "http://10.0.2.2:1507/", "redis://10.0.2.2", object: StatusListener {
  
@@ -58,14 +55,14 @@ Rotor.initialize(applicationContext, "http://10.0.2.2:1507/", "redis://10.0.2.2"
  
 })
 ```
-Debug:
+Available debug logs:
 ```kotlin
 // debug logs
 Rotor.setDebug(true);
 ```
 Background updates (not optional)
 ------------------
-Rotor Database library works in background in order to receive updates when application is on background or foreground. You must add RotorService to your `AndroidManifest.xml` file:
+Rotor Core works in background in order to receive updates or messages when application is on background or foreground. You must add RotorService to your `AndroidManifest.xml` file:
 ```xml
 <application>
  
@@ -90,6 +87,17 @@ protected void onPause() {
     super.onPause();
 }
 ```
+```kotlin
+override fun onResume() {
+    super.onResume()
+    Rotor.onResume()
+}
+
+override fun onPause() {
+    Rotor.onPause()
+    super.onPause()
+}
+``
 
 License
 -------
