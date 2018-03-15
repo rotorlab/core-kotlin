@@ -22,23 +22,18 @@ class Rotor {
 
     companion object {
 
-        enum class Builder {
-            DATABASE,
-            NOTIFICATION
-        }
-
         private val TAG = Rotor::class.simpleName
 
-        private var context: Context? = null
+        var context: Context? = null
         var id: String ? = null
         var urlServer: String ? = null
         var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
-        private var rotorService: RotorService? = null
+        var rotorService: RotorService? = null
         private var isServiceBound: Boolean? = null
 
-        private var gson: Gson? = null
+        var gson: Gson? = null
         var debug: Boolean? = null
         var initialized: Boolean? = null
         var builders: HashMap<Builder, BuilderFace> ? = null
@@ -154,10 +149,6 @@ class Rotor {
                     face.onMessageReceived(jsonObject)
                 }
             }
-        }
-
-        @JvmStatic fun core() : Rotor.Companion {
-            return this@Companion
         }
 
         @JvmStatic fun prepare(type: Builder, face: BuilderFace) {
