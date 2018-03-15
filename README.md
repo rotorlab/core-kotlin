@@ -1,4 +1,4 @@
-<p align="center"><img width="30%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png"></p>
 
 # Rotor Core for Android
 
