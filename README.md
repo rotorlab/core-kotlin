@@ -24,11 +24,11 @@ dependencies {
 }
 ```
 Initialize Rotor Core on your app. `connected()` method is fired only when initialized method is called and core is connected to Redis server. `reconnecting()` will be called when core is trying to connect to redis.
+
 Java implementation:
 ```java
 // redis url starts with redis://, port is not included
 Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1507/", "redis://10.0.2.2", new StatusListener() {
- 
     @Override
     public void connected() {
          
@@ -38,13 +38,11 @@ Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1507/", "redis://10.0
     public void reconnecting() {
          
     }
-   
 });
 ```
 Kotlin implementation:
 ```kotlin
 Rotor.initialize(applicationContext, "http://10.0.2.2:1507/", "redis://10.0.2.2", object: StatusListener {
- 
     override fun connected() {
         
     }
@@ -52,12 +50,10 @@ Rotor.initialize(applicationContext, "http://10.0.2.2:1507/", "redis://10.0.2.2"
     override fun reconnecting() {
         
     }
- 
 })
 ```
 Available debug logs:
 ```kotlin
-// debug logs
 Rotor.setDebug(true);
 ```
 Background updates (not optional)
@@ -65,12 +61,10 @@ Background updates (not optional)
 Rotor Core works in background in order to receive updates or messages when application is on background or foreground. You must add RotorService to your `AndroidManifest.xml` file:
 ```xml
 <application>
- 
     <service
         android:name="com.rotor.core.RotorService"
         android:enabled="true"
         android:exported="true" />
- 
 </application>
 ```
 This service is controlled when the application is present and must be `bind` or `unbind`. Add in activities:
