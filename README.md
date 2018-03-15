@@ -91,7 +91,7 @@ override fun onPause() {
     Rotor.onPause()
     super.onPause()
 }
-``
+```
 
 License
 -------
