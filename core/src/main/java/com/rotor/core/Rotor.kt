@@ -22,12 +22,12 @@ class Rotor {
 
     companion object {
 
-        private val TAG = Rotor::class.simpleName
+        private val TAG = Rotor::class.java.simpleName
 
         var context: Context? = null
-        var id: String ? = null
-        var urlServer: String ? = null
-        var urlRedis: String ? = null
+        @JvmStatic var id: String ? = null
+        @JvmStatic var urlServer: String ? = null
+        @JvmStatic var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
         var rotorService: RotorService? = null
@@ -155,6 +155,10 @@ class Rotor {
             if (Companion.builders != null) {
                 Companion.builders!![type] = face
             }
+        }
+
+        @JvmStatic fun debug(debug: Boolean) {
+            Companion.debug = debug
         }
 
     }

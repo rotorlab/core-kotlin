@@ -26,14 +26,14 @@ class RotorService: Service() {
     private val PREF_KEY = "rotor_url"
     private val PREF_CONFIG_KEY = "rotor_config"
     private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rotor Server"
-    lateinit var binder: FBinder
-    var initialized: Boolean = false
-    var client: RedisClient ? = null
-    var moment: Long = 0
-    var connection: RedisPubSubConnection<String, String> ? = null
+    internal var binder: FBinder ? = null
+    internal var initialized: Boolean = false
+    internal var client: RedisClient ? = null
+    internal var moment: Long = 0
+    internal var connection: RedisPubSubConnection<String, String> ? = null
     internal var sc: ServiceConnection ? = null
     internal var listener: InternalServiceListener? = null
-    var connectedToRedis: Boolean = false
+    internal var connectedToRedis: Boolean = false
 
     private val redisPubSubListener = object : RedisPubSubListener<String, String> {
         override fun message(s: String, s2: String) {
