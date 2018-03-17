@@ -3,7 +3,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'com.github.dcendents.android-maven'
 apply plugin: 'com.jfrog.bintray'
 
-version = "0.0.9"
+version = rotor_version
 
 android {
     compileSdkVersion 26
@@ -50,7 +50,7 @@ install {
         pom {
             project {
                 packaging 'aar'
-                name 'Kotlin core for Rotor client'
+                name 'Core module for Rotor client (kotlin)'
                 url siteUrl
                 // Set your license
                 licenses {

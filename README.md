@@ -1,4 +1,4 @@
-<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
 
 # Rotor Core for Android
 
@@ -11,7 +11,21 @@ Check out [rotor-server repo](https://github.com/rotorlab/server-node) for more 
 
 ### Usage
 - Import library:
-
+```groovy
+buildscript {
+ 
+    ext.kotlin_version = '1.2.30'
+    ext.rotor_version = '0.0.10'
+ 
+    repositories {
+        jcenter()
+    }
+ 
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+    }
+}
+```
 ```groovy
 android {
     defaultConfig {
@@ -20,7 +34,9 @@ android {
 }
  
 dependencies {
-    implementation 'com.rotor:core:0.0.5'
+    implementation "com.rotor:core:$rotor_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.code.gson:gson:2.8.2'
 }
 ```
 Initialize Rotor Core on your app. `connected()` method is fired only when initialized method is called and core is connected to Redis server. `reconnecting()` will be called when core is trying to connect to redis.
