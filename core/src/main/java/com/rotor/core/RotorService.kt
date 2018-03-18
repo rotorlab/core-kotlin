@@ -22,18 +22,21 @@ import java.util.*
  */
 class RotorService: Service() {
 
+    companion object {
+        internal val PREF_ID = "rotor_id"
+        internal val PREF_URL = "rotor_url"
+        internal val PREF_CONFIG = "rotor_config"
+    }
     private val TAG = RotorService::class.java.simpleName
-    private val PREF_KEY = "rotor_url"
-    private val PREF_CONFIG_KEY = "rotor_config"
     private val EXCEPTION_NO_SERVER_URL = "No URL was defined for Rotor Server"
-    lateinit var binder: FBinder
-    var initialized: Boolean = false
-    var client: RedisClient ? = null
-    var moment: Long = 0
-    var connection: RedisPubSubConnection<String, String> ? = null
+    internal var binder: FBinder = FBinder()
+    internal var initialized: Boolean = false
+    internal var client: RedisClient ? = null
+    internal var moment: Long = 0
+    internal var connection: RedisPubSubConnection<String, String> ? = null
     internal var sc: ServiceConnection ? = null
-    internal var listener: InternalServiceListener? = null
-    var connectedToRedis: Boolean = false
+    internal var connectedToRedis: Boolean = false
+    var listener: InternalServiceListener? = null
 
     private val redisPubSubListener = object : RedisPubSubListener<String, String> {
         override fun message(s: String, s2: String) {
@@ -90,11 +93,11 @@ class RotorService: Service() {
         if (client == null) {
             var url = Rotor.urlRedis
             if (url?.length == 0) {
-                val shared = applicationContext.getSharedPreferences(PREF_CONFIG_KEY, Context.MODE_PRIVATE)
-                url = shared.getString(PREF_KEY, null)
+                val shared = applicationContext.getSharedPreferences(PREF_CONFIG, Context.MODE_PRIVATE)
+                url = shared.getString(PREF_URL, null)
             } else {
-                val shared = applicationContext.getSharedPreferences(PREF_CONFIG_KEY, Context.MODE_PRIVATE).edit()
-                shared.putString(PREF_KEY, url)
+                val shared = applicationContext.getSharedPreferences(PREF_CONFIG, Context.MODE_PRIVATE).edit()
+                shared.putString(PREF_URL, url)
                 shared.apply()
             }
 
@@ -164,7 +167,7 @@ class RotorService: Service() {
     fun setListener(listener: InternalServiceListener) {
         this@RotorService.listener = listener
 
-        if (initialized) {
+        if (initializing) {
             this@RotorService.listener.connected()
         }
     }*/

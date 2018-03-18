@@ -11,6 +11,8 @@ import android.util.Log
 import com.rotor.core.interfaces.InternalServiceListener
 import com.rotor.core.interfaces.StatusListener
 import com.google.gson.Gson
+import com.rotor.core.RotorService.Companion.PREF_CONFIG
+import com.rotor.core.RotorService.Companion.PREF_ID
 import com.rotor.core.interfaces.BuilderFace
 import org.json.JSONObject
 
@@ -22,12 +24,12 @@ class Rotor {
 
     companion object {
 
-        private val TAG = Rotor::class.simpleName
+        private val TAG = Rotor::class.java.simpleName
 
         var context: Context? = null
-        var id: String ? = null
-        var urlServer: String ? = null
-        var urlRedis: String ? = null
+        @JvmStatic var id: String ? = null
+        @JvmStatic var urlServer: String ? = null
+        @JvmStatic var urlRedis: String ? = null
         lateinit var statusListener: StatusListener
 
         var rotorService: RotorService? = null
@@ -35,10 +37,10 @@ class Rotor {
 
         var gson: Gson? = null
         var debug: Boolean? = null
-        var initialized: Boolean? = null
+        var initializing: Boolean? = null
         var builders: HashMap<Builder, BuilderFace> ? = null
 
-        val serviceConnection: ServiceConnection = object : ServiceConnection {
+        @JvmStatic val serviceConnection: ServiceConnection = object : ServiceConnection {
 
             override fun onServiceConnected(className: ComponentName, service: IBinder) {
                 if (service is RotorService.FBinder) {
@@ -47,8 +49,8 @@ class Rotor {
                     rotorService?.listener = object : InternalServiceListener {
 
                         override fun connected() {
-                            if (initialized!!) {
-                                initialized = false
+                            if (initializing!!) {
+                                initializing = false
                                 statusListener.connected()
                             }
                         }
@@ -56,6 +58,9 @@ class Rotor {
                         override fun reconnecting() {
                             statusListener.reconnecting()
                         }
+                    }
+                    if (initializing!!) {
+                        rotorService?.startService()
                     }
                     if (debug!!) Log.e(TAG, "instanced service")
                 }
@@ -80,21 +85,21 @@ class Rotor {
             }
             Companion.debug = false
             Companion.gson = Gson()
-            val shared = context.getSharedPreferences("flamebase_config", MODE_PRIVATE)
-            Companion.id = shared.getString("flamebase_id", null)
+            val shared = context.getSharedPreferences(PREF_CONFIG, MODE_PRIVATE)
+            Companion.id = shared.getString(PREF_ID, null)
             if (Companion.id == null) {
                 Companion.id = generateNewId()
             }
 
-            Companion.initialized = true
+            Companion.initializing = true
 
             start()
         }
 
         private fun generateNewId(): String {
             val id = Settings.Secure.getString(context!!.getContentResolver(), Settings.Secure.ANDROID_ID)
-            val shared = context!!.getSharedPreferences("flamebase_config", MODE_PRIVATE).edit()
-            shared.putString("flamebase_id", id)
+            val shared = context!!.getSharedPreferences(PREF_CONFIG, MODE_PRIVATE).edit()
+            shared.putString(PREF_ID, id)
             shared.apply()
             return id
         }
@@ -155,6 +160,10 @@ class Rotor {
             if (Companion.builders != null) {
                 Companion.builders!![type] = face
             }
+        }
+
+        @JvmStatic fun debug(debug: Boolean) {
+            Companion.debug = debug
         }
 
     }
