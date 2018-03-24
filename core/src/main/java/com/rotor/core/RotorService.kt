@@ -33,6 +33,7 @@ class RotorService: Service() {
     internal var initialized: Boolean = false
     internal var client: RedisClient ? = null
     internal var moment: Long = 0
+    internal var url: String ? = null
     internal var connection: RedisPubSubConnection<String, String> ? = null
     internal var sc: ServiceConnection ? = null
     internal var connectedToRedis: Boolean = false
@@ -91,8 +92,10 @@ class RotorService: Service() {
     private fun startConnection() {
         listener?.reconnecting()
         if (client == null) {
-            var url = Rotor.urlRedis
-            if (url?.length == 0) {
+            if (url == null) {
+                url = Rotor.urlRedis
+            }
+            if (url == null || url?.length == 0) {
                 val shared = applicationContext.getSharedPreferences(PREF_CONFIG, Context.MODE_PRIVATE)
                 url = shared.getString(PREF_URL, null)
             } else {
