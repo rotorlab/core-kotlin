@@ -19,7 +19,7 @@ android {
     }
 }
  
-def rotor_version =  "0.1.0"
+def rotor_version =  "0.1.1"
  
 dependencies {
     implementation ("com.rotor:core:$rotor_version@aar") {
