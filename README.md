@@ -1,5 +1,5 @@
 [ ![Download](https://api.bintray.com/packages/efff/maven/RotorKotlinCore/images/download.svg) ](https://bintray.com/efff/maven/RotorKotlinCore/_latestVersion)
-<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/database-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
 
 # Rotor Core for Android
 
@@ -19,7 +19,7 @@ android {
     }
 }
  
-def rotor_version =  "0.1.2"
+def rotor_version =  "0.2"
  
 dependencies {
     implementation ("com.rotor:core:$rotor_version@aar") {
@@ -32,7 +32,7 @@ Initialize Rotor Core on your app. `connected()` method is fired only when initi
 Java implementation:
 ```java
 // redis url starts with redis://, port is not included
-Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1507/", "redis://10.0.2.2", new StatusListener() {
+Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1508/", "redis://10.0.2.2", new StatusListener() {
     @Override
     public void connected() {
          
@@ -46,7 +46,7 @@ Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1507/", "redis://10.0
 ```
 Kotlin implementation:
 ```kotlin
-Rotor.initialize(applicationContext, "http://10.0.2.2:1507/", "redis://10.0.2.2", object: StatusListener {
+Rotor.initialize(applicationContext, "http://10.0.2.2:1508/", "redis://10.0.2.2", object: StatusListener {
     override fun connected() {
         
     }
