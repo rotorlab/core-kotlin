@@ -1,101 +1,16 @@
 [ ![Download](https://api.bintray.com/packages/efff/maven/RotorKotlinCore/images/download.svg) ](https://bintray.com/efff/maven/RotorKotlinCore/_latestVersion)
-<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center">Rotor Core Android library</p>
 
-# Rotor Core for Android
+-----------------------------
 
-### Requirements
-**1º redis-server:** Amazing Pub/Sub engine for real-time changes. Simply install and start it.
+Welcome to the **Rotor Core Android library - wiki**, here you'll find all information about the implementation and use of Rotor Core library.
 
-**2º rotor-server:** It will be our server cluster for storing json objects. Server cluster is run with **node** framework.
+[Home](https://github.com/rotorlab/core-kotlin/wiki)
 
-Check out [rotor-server repo](https://github.com/rotorlab/server-node) for more information.
+[Get Started](https://github.com/rotorlab/core-kotlin/wiki/Get-Started)
 
-### Usage
-- Import library:
-```groovy
-android {
-    defaultConfig {
-        multiDexEnabled true
-    }
-}
- 
-def rotor_version =  "0.3"
- 
-dependencies {
-    implementation ("com.rotor:core:$rotor_version@aar") {
-        transitive = true
-    }
-}
-```
-Initialize Rotor Core on your app. `connected()` method is fired only when initialized method is called and core is connected to Redis server. `reconnecting()` will be called when core is trying to connect to redis.
-
-Java implementation:
-```java
-// redis url starts with redis://, port is not included
-Rotor.initialize(getApplicationContext(), "http://10.0.2.2:1508/", "redis://10.0.2.2", new StatusListener() {
-    @Override
-    public void connected() {
-         
-    }
-    
-    @Override
-    public void reconnecting() {
-         
-    }
-});
-```
-Kotlin implementation:
-```kotlin
-Rotor.initialize(applicationContext, "http://10.0.2.2:1508/", "redis://10.0.2.2", object: StatusListener {
-    override fun connected() {
-        
-    }
- 
-    override fun reconnecting() {
-        
-    }
-})
-```
-Available debug logs:
-```kotlin
-Rotor.setDebug(true);
-```
-Background updates (not optional)
-------------------
-Rotor Core works in background in order to receive updates or messages when application is on background or foreground. You must add RotorService to your `AndroidManifest.xml` file:
-```xml
-<application>
-    <service
-        android:name="com.rotor.core.RotorService"
-        android:enabled="true"
-        android:exported="true" />
-</application>
-```
-This service is controlled when the application is present and must be `bind` or `unbind`. Add in activities:
-```java
-@Override
-protected void onResume() {
-    super.onResume();
-    Rotor.onResume();
-}
- 
-@Override
-protected void onPause() {
-    Rotor.onPause();
-    super.onPause();
-}
-```
-```kotlin
-override fun onResume() {
-    super.onResume()
-    Rotor.onResume()
-}
-
-override fun onPause() {
-    Rotor.onPause()
-    super.onPause()
-}
-```
+[Background Service](https://github.com/rotorlab/core-kotlin/wiki/Background-Service)
 
 License
 -------
