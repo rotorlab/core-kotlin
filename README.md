@@ -1,5 +1,5 @@
 [ ![Download](https://api.bintray.com/packages/efff/maven/RotorKotlinCore/images/download.svg) ](https://bintray.com/efff/maven/RotorKotlinCore/_latestVersion)
-<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
 
 # Rotor Core for Android
 
@@ -19,7 +19,7 @@ android {
     }
 }
  
-def rotor_version =  "0.2"
+def rotor_version =  "0.3"
  
 dependencies {
     implementation ("com.rotor:core:$rotor_version@aar") {
