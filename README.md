@@ -4,8 +4,6 @@
 
 -----------------------------
 
-Welcome to the **Rotor Core Android library - wiki**, here you'll find all information about the implementation and use of Rotor Core library.
-
 [Home](https://github.com/rotorlab/core-kotlin/wiki)
 
 [Get Started](https://github.com/rotorlab/core-kotlin/wiki/Get-Started)
