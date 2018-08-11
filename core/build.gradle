@@ -6,11 +6,11 @@ apply plugin: 'com.jfrog.bintray'
 version = rotor_version
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 26
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 27
+        minSdkVersion 23
+        targetSdkVersion 26
         versionCode 2
         versionName version
         multiDexEnabled true
@@ -27,7 +27,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation "com.android.support:appcompat-v7:$support"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
