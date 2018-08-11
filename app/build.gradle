@@ -6,7 +6,7 @@ android {
     compileSdkVersion 26
 
     defaultConfig {
-        applicationId "com.efraespada.chappykotlin"
+        applicationId "com.rotor.chappykotlin"
         minSdkVersion 14
         targetSdkVersion 26
         versionCode 1

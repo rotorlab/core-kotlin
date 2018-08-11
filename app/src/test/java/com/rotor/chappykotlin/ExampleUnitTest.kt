@@ -1,4 +1,4 @@
-package com.efraespada.chappykotlin
+package com.rotor.chappykotlin
 
 import org.junit.Test
 

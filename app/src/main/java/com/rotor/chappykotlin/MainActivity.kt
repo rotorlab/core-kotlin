@@ -1,4 +1,4 @@
-package com.efraespada.chappykotlin
+package com.rotor.chappykotlin
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle

@@ -2,7 +2,7 @@
 
 buildscript {
     ext.kotlin_version = '1.2.51'
-    ext.rotor_version = '0.4'
+    ext.rotor_version = '0.6'
     ext.support = '26.0.1'
 
     repositories {

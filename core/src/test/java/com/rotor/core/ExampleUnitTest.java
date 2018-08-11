@@ -1,4 +1,4 @@
-package com.flamebase.core;
+package com.rotor.core;
 
 import org.junit.Test;
 
