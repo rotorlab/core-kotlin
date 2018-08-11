@@ -1,10 +1,12 @@
 [ ![Download](https://api.bintray.com/packages/efff/maven/RotorKotlinCore/images/download.svg) ](https://bintray.com/efff/maven/RotorKotlinCore/_latestVersion)
-<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/develop/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
+<p align="center"><img width="10%" vspace="20" src="https://github.com/rotorlab/core-kotlin/raw/master/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png"></p>
 <p align="center">Rotor Core Android library</p>
 
 -----------------------------
 
-[Home](https://github.com/rotorlab/core-kotlin/wiki)
+### [Rotor](https://rotorlab.github.io/rotor/)
+
+[Wiki](https://github.com/rotorlab/core-kotlin/wiki)
 
 [Get Started](https://github.com/rotorlab/core-kotlin/wiki/Get-Started)
 
@@ -12,7 +14,7 @@
 
 License
 -------
-    Copyright 2018 RotorLab Organization
+    Copyright 2018 RotorLab
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
